@@ -45,13 +45,3 @@ Dự án `lightweight-ph4ntoms` là một hệ thống microservices được x�
   - Hỗ trợ cân bằng tải (load balancing) khi tích hợp với các công cụ như Ribbon hoặc Feign.
 
 ---
-
-## Cách chạy dự án
-
-### 1. Chạy Configuration Service
-Configuration Service cần được khởi động đầu tiên để các service khác có thể lấy cấu hình từ nó.
-
-- **Cách chạy**:
-   ```bash
-   cd configuration
-   ./mvnw spring-boot:run
