@@ -2,7 +2,11 @@
   <dictionary name="project">
     <words>
       <w>confluentinc</w>
+      <w>hình</w>
+      <w>ntoms</w>
       <w>openzipkin</w>
+      <w>redisinsight</w>
+      <w>redislabs</w>
     </words>
   </dictionary>
 </component>

@@ -1,9 +1,18 @@
 spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping:
+          com.ph4ntoms.authenticate.request.kafka.SendEmailRequest:com.ph4ntoms.message.request.SendEmailRequest
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${email.username}
-    password: ${email.password}
+    username: pha.4h8@gmail.com
+    password: vnhg rbeb xrew phqb
     properties:
       mail:
         smtp:

@@ -1,0 +1,19 @@
+package com.ph4ntoms.authenticate.request.entity;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+import java.util.List;
+import java.util.UUID;
+
+@Data
+public class GroupRequest {
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
+    private String name;
+
+    private String description;
+    private List<UUID> roleIds;
+    private List<UUID> userIds;
+} 

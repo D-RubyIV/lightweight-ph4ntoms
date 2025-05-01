@@ -1,11 +1,12 @@
 # lightweight-ph4ntoms
 
 ## Giới thiệu
-`lightweight-ph4ntoms` là một hệ thống microservices được thiết kế để cung cấp các chức năng quản lý cấu hình, khám phá dịch vụ và gửi email. Dự án được xây dựng trên nền tảng **Spring Boot** và sử dụng các công cụ như **Spring Cloud**, **Netflix Eureka**, và **Kafka** để đảm bảo tính linh hoạt, khả năng mở rộng và dễ dàng tích hợp.
+`lightweight-ph4ntoms` là một hệ thống microservices được thiết kế để cung cấp các chức năng quản lý cấu hình, khám phá dịch vụ, xác thực và gửi email. Dự án được xây dựng trên nền tảng **Spring Boot** và sử dụng các công cụ như **Spring Cloud**, **Netflix Eureka**, **Redis**, và **Kafka** để đảm bảo tính linh hoạt, khả năng mở rộng và dễ dàng tích hợp.
 
-Hệ thống bao gồm ba service chính:
+Hệ thống bao gồm bốn service chính:
 - **Configuration Service**: Quản lý cấu hình tập trung.
 - **Discovery Service**: Đăng ký và khám phá các dịch vụ trong hệ thống.
+- **Authenticate Service**: Xử lý xác thực và phân quyền người dùng.
 - **Message Service**: Gửi email và hỗ trợ giao tiếp không đồng bộ qua Kafka.
 
 ---
@@ -52,7 +53,29 @@ Hệ thống bao gồm ba service chính:
 
 ---
 
-### 3. Message Service
+### 3. Authenticate Service
+- **Mô tả**:  
+  Đây là một service chịu trách nhiệm xử lý xác thực và phân quyền người dùng trong hệ thống. Nó sử dụng **Spring Security** và **Redis** để quản lý phiên đăng nhập và token.
+
+- **Tính năng chính**:
+  - Xác thực người dùng (Authentication)
+  - Phân quyền (Authorization)
+  - Quản lý phiên đăng nhập với Redis
+  - Tích hợp JWT cho bảo mật
+
+- **Cách hoạt động**:
+  - Xử lý các yêu cầu đăng nhập và xác thực
+  - Lưu trữ và quản lý thông tin phiên trong Redis
+  - Cung cấp các endpoint để kiểm tra và xác thực token
+
+- **Cấu hình**:
+  - **Port**: `8765`
+  - **Redis**: Sử dụng cho lưu trữ phiên
+  - **JWT**: Quản lý token xác thực
+
+---
+
+### 4. Message Service
 - **Mô tả**:  
   Đây là một service chịu trách nhiệm gửi email và hỗ trợ giao tiếp không đồng bộ qua Kafka. Nó sử dụng **Spring Boot Mail Starter** để tích hợp với các máy chủ SMTP.
 
@@ -78,8 +101,31 @@ Hệ thống bao gồm ba service chính:
 ---
 
 ## Yêu cầu hệ thống
-- **Java**: JDK 17 hoặc cao hơn.
-- **Maven**: 3.9.9 hoặc cao hơn.
-- **Docker**: Để chạy các dịch vụ phụ thuộc như PostgreSQL, Kafka, và Zipkin.
+- **Java**: JDK 17 hoặc cao hơn
+- **Maven**: 3.9.9 hoặc cao hơn
+- **Docker**: Để chạy các dịch vụ phụ thuộc
+- **Docker Compose**: Để quản lý các container
+
+### Các dịch vụ phụ thuộc (được cung cấp qua Docker)
+- **PostgreSQL**: Cơ sở dữ liệu chính
+- **Redis**: Lưu trữ phiên và cache
+- **RedisInsight**: Giao diện quản lý Redis (port 5540)
+- **Kafka**: Message broker
+- **Zookeeper**: Quản lý Kafka cluster
+- **Zipkin**: Distributed tracing (port 9411)
+
+---
+
+## Khởi động hệ thống
+1. Đảm bảo Docker và Docker Compose đã được cài đặt
+2. Chạy lệnh sau để khởi động các dịch vụ phụ thuộc:
+   ```bash
+   docker-compose up -d
+   ```
+3. Khởi động các service theo thứ tự:
+   - Configuration Service
+   - Discovery Service
+   - Authenticate Service
+   - Message Service
 
 ---
