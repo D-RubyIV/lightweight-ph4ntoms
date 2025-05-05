@@ -9,11 +9,13 @@ import java.util.List;
 public class CustomPage<T> {
     List<T> content;
     CustomPageable pageable;
+    Long totalElements;
 
     public CustomPage(Page<T> page) {
         this.content = page.getContent();
         this.pageable = new CustomPageable(page.getPageable().getPageNumber(),
                 page.getPageable().getPageSize(), page.getTotalElements());
+        this.totalElements = page.getTotalElements();
     }
 
     @Data

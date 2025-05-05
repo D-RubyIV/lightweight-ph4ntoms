@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: AUTHENTICATE
+          uri: lb://AUTHENTICATE
+          predicates:
+            - Path=/gateway/api/v1/rbac/**
+          filters:
+            - StripPrefix=1
+            - AuthenticationFilter
+        - id: ZDEMO
+          uri: lb://ZDEMO
+          predicates:
+            - Path=/zdemo/**
+          filters:
+            - StripPrefix=0
+            - AuthenticationFilter
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+  circuitbreaker:
+    enabled: true

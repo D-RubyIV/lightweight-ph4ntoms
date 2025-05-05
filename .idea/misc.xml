@@ -8,7 +8,15 @@
         <option value="$PROJECT_DIR$/discovery/pom.xml" />
         <option value="$PROJECT_DIR$/message/pom.xml" />
         <option value="$PROJECT_DIR$/authenticate/pom.xml" />
+        <option value="$PROJECT_DIR$/demo/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/zdemo/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/demo/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">

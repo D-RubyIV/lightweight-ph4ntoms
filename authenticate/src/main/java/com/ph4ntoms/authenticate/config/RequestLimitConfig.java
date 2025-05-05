@@ -12,7 +12,7 @@ public class RequestLimitConfig {
 
     @Bean
     public Bucket createNewBucket() {
-        Bandwidth limit = Bandwidth.simple(5, Duration.ofMinutes(1));
+        Bandwidth limit = Bandwidth.simple(50, Duration.ofMinutes(1));
         return Bucket.builder()
                 .addLimit(limit)
                 .build();

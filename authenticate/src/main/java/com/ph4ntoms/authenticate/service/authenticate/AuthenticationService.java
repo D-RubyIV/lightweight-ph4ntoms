@@ -1,5 +1,6 @@
 package com.ph4ntoms.authenticate.service.authenticate;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.ph4ntoms.authenticate.exception.AuthenticateException;
 import com.ph4ntoms.authenticate.model.User;
 import com.ph4ntoms.authenticate.producer.Producer;
@@ -156,6 +157,20 @@ public class AuthenticationService {
             logger.error("Error during activation process for code: {}", request.getCode(), e);
             throw new AuthenticateException(getMessage("activation.failed"));
         }
+    }
+
+    public Boolean isValidToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            try {
+                String username = jwtTokenProvider.extractUsername(token);
+                return jwtTokenProvider.validateToken(token) && username != null;
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     @Transactional

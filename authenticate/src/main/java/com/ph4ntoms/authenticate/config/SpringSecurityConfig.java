@@ -55,8 +55,8 @@ public class SpringSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterAfter(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/auth/**").permitAll();
-                    authorize.anyRequest().permitAll();
+                    authorize.requestMatchers("/authenticate/**").permitAll();
+                    authorize.anyRequest().authenticated();
                 })
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -67,15 +67,14 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("*");
-            }
-        };
-    }
-
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(@NonNull CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedMethods("*");
+//            }
+//        };
+//    }
 }

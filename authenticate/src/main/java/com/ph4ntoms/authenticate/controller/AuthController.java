@@ -8,13 +8,10 @@ import com.ph4ntoms.authenticate.service.entity.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1/authenticate")
+@RequestMapping(value = "/authenticate")
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
@@ -33,5 +30,10 @@ public class AuthController {
     @PostMapping(value = "activate")
     public ResponseEntity<?> activate(@RequestBody @Valid ActivateRequest request) {
         return ResponseEntity.ok(authenticationService.activate(request));
+    }
+
+    @GetMapping(value = "validate")
+    public ResponseEntity<?> validate(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(authenticationService.isValidToken(token));
     }
 }

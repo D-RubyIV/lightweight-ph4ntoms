@@ -1,34 +1,52 @@
 package com.ph4ntoms.authenticate.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "groups")
 @Data
+@ToString(exclude = "roles")
 public class Group extends Base {
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
+
+    @NotBlank(message = "Code is required")
+    @Size(min = 2, max = 50, message = "Code must be between 2 and 50 characters")
     private String code;
-    private Boolean enabled;
+
+    @Builder.Default
+    private Boolean enabled = true;
+
     private String description;
 
-    @ManyToMany(mappedBy = "groups")
-    private List<User> users = new ArrayList<>();
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "group_roles",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles = new ArrayList<>();
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        return this.getId() != null && this.getId().equals(((Group) obj).getId());
+    }
 }

@@ -17,13 +17,19 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements IService<User, UserRequest, UUID> {
+public class UserService implements AService<User, UserRequest, UUID> {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<User> findAllEntities() {
+        return userRepository.findAll();
+    }
 
     @Override
     public Page<User> searchEntities(PageableObject pageableObject) {
@@ -66,16 +72,18 @@ public class UserService implements IService<User, UserRequest, UUID> {
     @Override
     @Transactional
     public void removeEntityById(UUID uuid) {
-        if (!userRepository.existsById(uuid)) {
-            throw new EntityNotFoundException("User not found with id: " + uuid);
-        }
-        userRepository.deleteById(uuid);
+        User user = userRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + uuid));
+        user.setEnabled(false);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void removeEntitiesByIds(List<UUID> uuids) {
-        // Implementation needed
+        List<User> users = userRepository.findAllById(uuids);
+        users.forEach(user -> user.setEnabled(false));
+        userRepository.saveAll(users);
     }
 
     @Override
@@ -94,7 +102,7 @@ public class UserService implements IService<User, UserRequest, UUID> {
             entity.setGroups(request.getGroupIds().stream()
                     .map(groupId -> groupRepository.findById(groupId)
                             .orElseThrow(() -> new EntityNotFoundException("Group not found with id: " + groupId)))
-                    .toList());
+                    .collect(Collectors.toSet()));
         }
     }
 
