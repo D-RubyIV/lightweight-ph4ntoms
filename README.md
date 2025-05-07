@@ -1,4 +1,4 @@
-# lightweight-ph4ntoms
+# lightweight-ph4ntoms(Open source, no further updates)
 
 ## Giới thiệu
 `lightweight-ph4ntoms` là một hệ thống microservices được thiết kế để cung cấp các chức năng quản lý cấu hình, khám phá dịch vụ, xác thực và gửi email. Dự án được xây dựng trên nền tảng **Spring Boot** và sử dụng các công cụ như **Spring Cloud**, **Netflix Eureka**, **Redis**, và **Kafka** để đảm bảo tính linh hoạt, khả năng mở rộng và dễ dàng tích hợp.
